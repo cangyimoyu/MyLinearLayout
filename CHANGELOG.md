@@ -3,6 +3,49 @@
 
 ---
 
+## [V1.3.4](https://github.com/youngsoft/MyLinearLayout/releases/tag/1.3.4)(2017/3/04)
+
+#### Added
+1. 布局视图添加了新方法`-(CGRect)subview:(UIView*)subview estimatedRectInLayoutSize:(CGSize)size`用来评估一个将要加入布局视图的子视图的frame值。这个方法通常用来实现一些子视图在布局视图之间移动的动画效果的能力。具体例子参见（DEMO:AllTest4ViewController）
+
+####Changed
+1. 优化了当将一个布局视图作为视图控制器的根视图时(self.view)的一些属性设置可能导致约束冲突，和可能导致将控制器中的视图加入到一个滚动视图时无法滚动的问题。
+2. 将线性布局`MyLinearLayout`中的shrinkType属性的默认值由原来的`MySubviewsShrink_Average`改为了`MySubviewsShrink_None`，也就是默认是不压缩的。
+3. 修正了相对布局中的子视图设置`useFrame`为YES时，子视图无法自由控制自己的frame的问题。
+4. 优化了所有类以及方法和属性以及各种类型的注释，注释更加清晰明了。同时优化了所有DEMO中的注释信息。
+5. 在布局视图以及一些扩展视图中增加了IBInspectable标识，以便更好的和XIB以及SB编程结合。
+
+## [V1.3.3](https://github.com/youngsoft/MyLinearLayout/releases/tag/1.3.3)(2017/2/24)
+
+#### Added
+1. 线性布局`MyLinearLayout`中的`shrinkType`中添加了一个可设置的值`MySubviewsShrink_Auto` 这个值的目的是为了解决水平线性布局里面当有左右2个子视图的宽度都不确定，但又不希望2个子视图不能重叠展示的问题。具体例子参见（DEMO:AllTest7ViewController 中的第4个例子）。
+2. 布局视图添加了属性`zeroPadding`用来描述当布局视图的尺寸由子视图决定，并且当布局视图中没有任何子视图时设置的padding值是否会参与布局视图尺寸的计算。默认是YES，当设置为NO时则当布局视图没有子视图时padding是不会参与布局视图尺寸的计算的。具体例子参见 （DEMO: LLTest4ViewController）
+3. 添加了线性布局、流式布局、浮动布局的initWithFrame的方法，这样你就可以用这个方法来指定frame值了。
+4. 添加了对普通视图的`wrapContentHeight`和`wrapContentWidth`的支持，这两个属性由原来的布局视图属性移植到了所有视图的扩展属性中。这样对于一个非布局父视图也可以通过设置`wrapContentHeight`和`wrapContentWidth`来实现其高度和宽度由里面的子布局视图来决定。具体例子参见（DEMO: LLTest4ViewController）。 
+5. 添加了对UIButton的宽度固定情况下高度自自适应的支持。
+
+#### Changed
+1. 删除框架布局的子视图要通过`marginGravity`的扩展属性来设置位置和尺寸的支持，具体变化参见MyFrameLayout.h中的代替方法。
+2. 取消了对自适应高度视图扩展属性`flexedHeight`的支持，将高度自适应设置改为了通过`wrapContentHeight`扩展属性的设置来完成。
+3. 优化了通过`makeLayout`来进行布局约束设置的一些方法。
+4. 修正了将一个布局视图添加到非布局视图里面后，如果后续调整了布局视图的边界设置后无法更新布局视图尺寸的问题。
+
+
+## [V1.3.2](https://github.com/youngsoft/MyLinearLayout/releases/tag/1.3.2)(2017/1/20)
+
+#### Added
+1. 流式布局`MyFlowLayout`添加了对分页滚动的支持，通过新增加的属性`pagedCount`来实现，这个属性只支持数量约束流式布局。`pagedCount`和`wrapContentHeight以及wrapContentWidth`配合使用能够实现各种方向上的分页滚动效果(具体见DEMO：FLLTest5ViewController)
+2. 线性布局`MyLinearLayout`中完全支持了所有子视图的高度等于宽度的设置的功能，以及在水平线性布局中添加了子宽度等于高度的功能。
+
+#### Changed
+1. 流式布局`MyFlowLayout`中的子视图的widthDime,heightDime中可设置的相对类型尺寸的值的维多扩宽，不仅可以依赖兄弟视图，父视图，甚至还可以依赖别的任意的视图。
+
+#### Fixed
+1. 修复了[#BUG30](https://github.com/youngsoft/MyLinearLayout/issues/30)，主要原因是当计算出视图的尺寸为小于0时，而又将这个尺寸用来设置视图的bounds属性的尺寸时会调整bounds的origin部分而产生的BUG。具体展示是视图的位置产生了不正确的错误。
+
+
+
+
 ## [V1.3.1](https://github.com/youngsoft/MyLinearLayout/releases/tag/1.3.1)(2016/12/28)
 
 #### Added

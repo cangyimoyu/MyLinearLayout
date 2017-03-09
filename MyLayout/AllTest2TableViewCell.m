@@ -78,7 +78,7 @@
     
     MyLinearLayout *rootLayout= [MyLinearLayout linearLayoutWithOrientation:MyLayoutViewOrientation_Horz];
     rootLayout.myMargin = 0;   //四周边距是0表示布局视图的尺寸和contentView的尺寸一致。
-    [self.contentView addSubview:rootLayout];
+    [self.contentView addSubview:rootLayout]; //如果您将布局视图作为子视图添加到UITableViewCell本身，并且同时用了myLeftMargin和myRightMargin来做边界的话，那么有可能最终展示的宽度会不正确。经过试验是因为对UITableViewCell本身的KVO监控所得到的新老尺寸的问题导致的这应该是iOS的一个BUG。所以这里建议最好是把布局视图添加到UITableViewCell的子视图contentView里面去。
     
     MyBorderLineDraw *bld = [[MyBorderLineDraw alloc] initWithColor:[UIColor lightGrayColor]];
     bld.headIndent = bld.tailIndent = 10;
@@ -132,8 +132,8 @@
     _descLabel.textColor = [CFTool color:4];
     _descLabel.font = [CFTool font:15];
     _descLabel.adjustsFontSizeToFitWidth = YES;
+    _descLabel.wrapContentHeight = YES;  //2行高度，高度根据内容确定。
     _descLabel.numberOfLines = 2;
-    _descLabel.flexedHeight = YES;  //2行高度，高度根据内容确定。
     [userInfoLayout addSubview:_descLabel];
     
     
@@ -212,8 +212,8 @@
     _descLabel.textColor = [CFTool color:4];
     _descLabel.font = [CFTool font:15];
     _descLabel.adjustsFontSizeToFitWidth = YES;
+    _descLabel.wrapContentHeight = YES;  //2行高度，高度根据内容确定。
     _descLabel.numberOfLines = 2;
-    _descLabel.flexedHeight = YES;  //2行高度，高度根据内容确定。
     _descLabel.leftPos.equalTo(_nameLabel.leftPos);
     _descLabel.rightPos.equalTo(_priceLabel.leftPos).offset(10);
     [rootLayout addSubview:_descLabel];
@@ -284,8 +284,8 @@
     _descLabel.textColor = [CFTool color:4];
     _descLabel.font = [CFTool font:15];
     _descLabel.adjustsFontSizeToFitWidth = YES;
+    _descLabel.wrapContentHeight = YES;  //2行高度，高度根据内容确定。
     _descLabel.numberOfLines = 2;
-    _descLabel.flexedHeight = YES;  //2行高度，高度根据内容确定。
     _descLabel.clearFloat = YES;
     _descLabel.weight = 1;
     [userInfoLayout addSubview:_descLabel];

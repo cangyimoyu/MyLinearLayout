@@ -1,5 +1,5 @@
 //
-//  Test3ViewController.m
+//  LLTest3ViewController.m
 //  MyLayout
 //
 //  Created by oybq on 15/6/21.
@@ -12,8 +12,11 @@
 
 @interface LLTest3ViewController ()
 
-@property(nonatomic, strong) MyLinearLayout *vertGravityLayout;
-@property(nonatomic, strong) MyLinearLayout *horzGravityLayout;
+@property(nonatomic, weak) UILabel *vertGravitySetLabel;
+@property(nonatomic, weak) UILabel *horzGravitySetLabel;
+
+@property(nonatomic, weak) MyLinearLayout *vertGravityLayout;
+@property(nonatomic, weak) MyLinearLayout *horzGravityLayout;
 
 @end
 
@@ -100,9 +103,8 @@
     actionTitleLabel.font = [CFTool font:15];
     actionTitleLabel.text = NSLocalizedString(@"Vertical layout gravity control, you can click the following different button to show the effect:", @"");
     actionTitleLabel.textColor = [CFTool color:4];
-    actionTitleLabel.numberOfLines = 0;
     actionTitleLabel.adjustsFontSizeToFitWidth = YES;
-    actionTitleLabel.flexedHeight = YES;
+    actionTitleLabel.wrapContentHeight = YES;
     actionTitleLabel.myTopMargin = 10;
     [contentLayout addSubview:actionTitleLabel];
     
@@ -138,14 +140,26 @@
 //创建垂直停靠线性布局
 -(void)createVertGravityLayout:(MyLinearLayout*)contentLayout
 {
-    self.vertGravityLayout = [MyLinearLayout linearLayoutWithOrientation:MyLayoutViewOrientation_Vert];
-    self.vertGravityLayout.wrapContentHeight = NO;
-    self.vertGravityLayout.backgroundColor = [CFTool color:0];
-    self.vertGravityLayout.myHeight = 160;
-    self.vertGravityLayout.myTopMargin = 10;
-    self.vertGravityLayout.myLeftMargin = 20;
-    self.vertGravityLayout.subviewMargin = 10; //设置每个子视图之间的间距为10
-    [contentLayout addSubview:self.vertGravityLayout];
+    //这个标签显示设置gravity值。
+    UILabel *vertGravitySetLabel = [UILabel new];
+    vertGravitySetLabel.adjustsFontSizeToFitWidth = YES;
+    vertGravitySetLabel.font = [CFTool font:13];
+    vertGravitySetLabel.text = @"vertGravityLayout.gravity = ";
+    [vertGravitySetLabel  sizeToFit];
+    vertGravitySetLabel.numberOfLines = 2;
+    [contentLayout addSubview:vertGravitySetLabel];
+    self.vertGravitySetLabel = vertGravitySetLabel;
+
+    
+    MyLinearLayout *vertGravityLayout = [MyLinearLayout linearLayoutWithOrientation:MyLayoutViewOrientation_Vert];
+    vertGravityLayout.wrapContentHeight = NO;
+    vertGravityLayout.backgroundColor = [CFTool color:0];
+    vertGravityLayout.myHeight = 160;
+    vertGravityLayout.myTopMargin = 10;
+    vertGravityLayout.myLeftMargin = 20;
+    vertGravityLayout.subviewMargin = 10; //设置每个子视图之间的间距为10
+    [contentLayout addSubview:vertGravityLayout];
+    self.vertGravityLayout = vertGravityLayout;
 
     
     UILabel *v1 = [self createLabel:NSLocalizedString(@"test text1", @"") backgroundColor:[CFTool color:5]];
@@ -178,8 +192,7 @@
     actionTitleLabel.textColor = [CFTool color:4];
     actionTitleLabel.text =  NSLocalizedString(@"Horizontal layout gravity control, you can click the following different button to show the effect:", @"");
     actionTitleLabel.adjustsFontSizeToFitWidth = YES;
-    actionTitleLabel.numberOfLines = 0;
-    actionTitleLabel.flexedHeight = YES;
+    actionTitleLabel.wrapContentHeight = YES;
     actionTitleLabel.myTopMargin = 10;
     [contentLayout addSubview:actionTitleLabel];
 
@@ -214,37 +227,44 @@
 
 -(void)createHorzGravityLayout:(MyLinearLayout*)contentLayout
 {
-    self.horzGravityLayout = [MyLinearLayout linearLayoutWithOrientation:MyLayoutViewOrientation_Horz];
-    self.horzGravityLayout.backgroundColor = [CFTool color:0];
-    self.horzGravityLayout.wrapContentWidth = NO;  //因为默认水平线性布局的宽度由子视图包裹，但这里的宽度由父布局决定的，所有这里必须设置为NO。
-    self.horzGravityLayout.myHeight = 200;
-    self.horzGravityLayout.myTopMargin = 10;
-    self.horzGravityLayout.myLeftMargin = 20;
-    self.horzGravityLayout.subviewMargin = 5;  //设置子视图之间的水平间距为5
-    [contentLayout addSubview:self.horzGravityLayout];
+    //这个标签显示设置gravity值。
+    UILabel *horzGravitySetLabel = [UILabel new];
+    horzGravitySetLabel.adjustsFontSizeToFitWidth = YES;
+    horzGravitySetLabel.font = [CFTool font:13];
+    horzGravitySetLabel.text = @"horzGravityLayout.gravity = ";
+    [horzGravitySetLabel  sizeToFit];
+    horzGravitySetLabel.numberOfLines = 2;
+    [contentLayout addSubview:horzGravitySetLabel];
+    self.horzGravitySetLabel = horzGravitySetLabel;
+    
+    MyLinearLayout *horzGravityLayout = [MyLinearLayout linearLayoutWithOrientation:MyLayoutViewOrientation_Horz];
+    horzGravityLayout.backgroundColor = [CFTool color:0];
+    horzGravityLayout.wrapContentWidth = NO;  //因为默认水平线性布局的宽度由子视图包裹，但这里的宽度由父布局决定的，所有这里必须设置为NO。
+    horzGravityLayout.myHeight = 200;
+    horzGravityLayout.myTopMargin = 10;
+    horzGravityLayout.myLeftMargin = 20;
+    horzGravityLayout.subviewMargin = 5;  //设置子视图之间的水平间距为5
+    [contentLayout addSubview:horzGravityLayout];
+    self.horzGravityLayout = horzGravityLayout;
     
     UILabel *v1 = [self createLabel:NSLocalizedString(@"test text1", @"") backgroundColor:[CFTool color:5]];
-    v1.numberOfLines = 0;
-    v1.flexedHeight = YES;
+    v1.wrapContentHeight = YES;
     v1.myWidth = 60;
     [self.horzGravityLayout addSubview:v1];
     
     UILabel *v2 = [self createLabel:NSLocalizedString(@"test text2 test text2", @"") backgroundColor:[CFTool color:6]];
-    v2.numberOfLines = 0;
-    v2.flexedHeight = YES;
+    v2.wrapContentHeight = YES;
     v2.myWidth = 60;
     [self.horzGravityLayout addSubview:v2];
     
     
     UILabel *v3 = [self createLabel:NSLocalizedString(@"test text3 test text3 test text3", @"") backgroundColor:[CFTool color:7]];
-    v3.numberOfLines = 0;
-    v3.flexedHeight = YES;
+    v3.wrapContentHeight = YES;
     v3.myWidth = 60;
     [self.horzGravityLayout addSubview:v3];
     
     UILabel *v4 = [self createLabel:NSLocalizedString(@"set top and bottom margin to determine height", @"") backgroundColor:[CFTool color:8]];
-    v4.numberOfLines = 0;
-    v4.flexedHeight = YES;
+    v4.wrapContentHeight = YES;
     v4.myTopMargin = 20;
     v4.myBottomMargin = 10;
     v4.myWidth = 60;
@@ -320,6 +340,9 @@
     
     [self.vertGravityLayout layoutAnimationWithDuration:0.2];
     
+    self.vertGravitySetLabel.text = [self gravityText:self.vertGravityLayout.gravity prefixText:@"vertGravityLayout.gravity"];
+    [self.vertGravitySetLabel sizeToFit];
+
 }
 
 -(void)handleHorzLayoutGravity:(UIButton*)button
@@ -369,6 +392,10 @@
     self.horzGravityLayout.gravity = vertGravity | horzGravity;
     
     [self.horzGravityLayout layoutAnimationWithDuration:0.2];
+    
+    self.horzGravitySetLabel.text = [self gravityText:self.horzGravityLayout.gravity prefixText:@"horzGravityLayout.gravity"];
+    [self.horzGravitySetLabel sizeToFit];
+
 }
 
 
@@ -381,6 +408,8 @@
     //通过MyMarginGravity_Horz_Window_Center的设置总是保证在窗口的中间而不是布局视图的中间。
     navigationItemLayout.gravity = MyMarginGravity_Horz_Window_Center | MyMarginGravity_Vert_Center;
     navigationItemLayout.frame = self.navigationController.navigationBar.bounds;
+    self.navigationItem.titleView = navigationItemLayout;
+
     
     UILabel *topLabel = [UILabel new];
     topLabel.text = NSLocalizedString(@"title center in the screen", @"");
@@ -398,8 +427,6 @@
     [navigationItemLayout addSubview:bottomLabel];
     
     
-    self.navigationItem.titleView = navigationItemLayout;
-    
 }
 
 -(void)handleNavigationTitleRestore:(id)sender
@@ -414,6 +441,69 @@
     self.navigationItem.titleView = topLabel;
 }
 
+
+#pragma mark -- Private Method
+
+-(NSString*)gravityText:(MyMarginGravity)gravity prefixText:(NSString*)prefixText
+{
+    //分别取出垂直和水平方向的停靠设置。
+    MyMarginGravity vertGravity = gravity & MyMarginGravity_Horz_Mask;
+    MyMarginGravity horzGravity = gravity & MyMarginGravity_Vert_Mask;
+    
+    NSString *vertGravityStr = @"";
+    switch (vertGravity) {
+        case MyMarginGravity_Vert_Top:
+            vertGravityStr = @"MyMarginGravity_Vert_Top";
+            break;
+        case MyMarginGravity_Vert_Center:
+            vertGravityStr = @"MyMarginGravity_Vert_Center";
+            break;
+        case MyMarginGravity_Vert_Bottom:
+            vertGravityStr = @"MyMarginGravity_Vert_Bottom";
+            break;
+        case MyMarginGravity_Vert_Fill:
+            vertGravityStr = @"MyMarginGravity_Vert_Fill";
+            break;
+        case MyMarginGravity_Vert_Between:
+            vertGravityStr = @"MyMarginGravity_Vert_Between";
+            break;
+        case MyMarginGravity_Vert_Window_Center:
+            vertGravityStr = @"MyMarginGravity_Vert_Window_Center";
+            break;
+        default:
+            vertGravityStr = @"MyMarginGravity_Vert_Top";
+            break;
+    }
+    
+    NSString *horzGravityStr = @"";
+    switch (horzGravity) {
+        case MyMarginGravity_Horz_Left:
+            horzGravityStr = @"MyMarginGravity_Horz_Left";
+            break;
+        case MyMarginGravity_Horz_Center:
+            horzGravityStr = @"MyMarginGravity_Horz_Center";
+            break;
+        case MyMarginGravity_Horz_Right:
+            horzGravityStr = @"MyMarginGravity_Horz_Right";
+            break;
+        case MyMarginGravity_Horz_Fill:
+            horzGravityStr = @"MyMarginGravity_Horz_Fill";
+            break;
+        case MyMarginGravity_Horz_Between:
+            horzGravityStr = @"MyMarginGravity_Horz_Between";
+            break;
+        case MyMarginGravity_Horz_Window_Center:
+            horzGravityStr = @"MyMarginGravity_Horz_Window_Center";
+            break;
+        default:
+            horzGravityStr = @"MyMarginGravity_Horz_Left";
+            break;
+    }
+    
+    
+    return [NSString stringWithFormat:@"%@ =\n %@ | %@",prefixText, vertGravityStr, horzGravityStr];
+
+}
 
 /*
 #pragma mark - Navigation

@@ -1,5 +1,5 @@
 //
-//  Test6ViewController.m
+//  LLTest6ViewController.m
 //  MyLayout
 //
 //  Created by oybq on 15/6/21.
@@ -13,6 +13,8 @@
 @interface LLTest6ViewController ()<UITextViewDelegate>
 
 @property(nonatomic, weak) UIButton *editButton;
+
+@property(nonatomic, weak) UIImageView *headImageView;
 
 
 @end
@@ -31,9 +33,8 @@
      */
     
     /*
-       1.如果把一个布局视图作为视图控制器根视图请务必将wrapContentHeight和wrapContentWidth设置为NO。
-       2.如果想让一个布局视图的宽度和非布局视图的宽度相等则请将布局视图的myLeftMargin = myRightMargin = 0或者widthDime.equalTo(superview.widthDime)
-       3.如果想让一个布局视图的高度和非布局视图的高度相等则请将布局视图的myTopMargin = myBottomMargin = 0或者heightDime.equalTo(superview.heightDime)
+       1.如果想让一个布局视图的宽度和非布局父视图的宽度相等则请将布局视图的myLeftMargin = myRightMargin = 0或者widthDime.equalTo(superview.widthDime)
+       2.如果想让一个布局视图的高度和非布局父视图的高度相等则请将布局视图的myTopMargin = myBottomMargin = 0或者heightDime.equalTo(superview.heightDime)
      */
     
     UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
@@ -62,7 +63,7 @@
     [userInfoLabel sizeToFit];
     userInfoLabel.myTopMargin = 10;
     userInfoLabel.myCenterXOffset = 0;
-    userInfoLabel.widthDime.uBound(rootLayout.widthDime, 0, 1);  //最大的宽度和父视图相等。
+    userInfoLabel.widthDime.uBound(rootLayout.widthDime, 0, 1);  //最大的宽度和父视图相等，这里第二个参数是第一个值的增量，第三个参数是第一个值的倍数
     [rootLayout addSubview:userInfoLabel];
     
     
@@ -75,6 +76,7 @@
     headImageView.myTopMargin = 0.25;
     headImageView.myCenterXOffset = 0;     //距离顶部间隙剩余空间的25%，水平居中对齐。
     [rootLayout addSubview:headImageView];
+    self.headImageView = headImageView;
     
     
     UITextField *nameField = [UITextField new];
@@ -85,7 +87,7 @@
     nameField.myHeight = 40;
     nameField.myLeftMargin = 0.1;
     nameField.myRightMargin = 0.1;
-    nameField.myTopMargin = 0.1;     //高度为40，左右间距为布局的10%, 顶部间距为剩余空间的10%
+    nameField.myTopMargin = 0.1;     //高度为40，左右边距为布局的10%, 顶部间距为剩余空间的10%
     [rootLayout addSubview:nameField];
     
     
@@ -113,13 +115,13 @@
     textView.layer.cornerRadius = 5;
     textView.delegate = self;
 
-    //左右间距为布局的10%，距离底部间距为65%,浮动高度，但高度最高为300，最低为30
-    //flexedHeight和max,min的结合能做到一些完美的自动伸缩功能。
+    //左右边距为布局的10%，距离底部间距为65%,高度自适应，但高度最高为300，最低为30
+    //wrapContentHeight和max,min的结合能做到一些完美的自动伸缩功能。
     textView.myLeftMargin = 0.05;
     textView.myRightMargin = 0.05;
     textView.myBottomMargin = 0.65;
-    textView.flexedHeight = YES;
-    textView.heightDime.max(300).min(60);  //虽然flexedHeight属性设置了视图的高度为动态高度，但是仍然不能超过300的高度以及不能小于60的高度。
+    textView.wrapContentHeight = YES;
+    textView.heightDime.max(300).min(60);  //虽然wrapContentHeight属性设置了视图的高度为动态高度，但是仍然不能超过300的高度以及不能小于60的高度。
     [rootLayout addSubview:textView];
     
     
@@ -127,7 +129,7 @@
     copyRightLabel.text = NSLocalizedString(@"copy rights reserved by Youngsoft", @"");
     copyRightLabel.textColor = [CFTool color:4];
     copyRightLabel.font = [CFTool font:15];
-    copyRightLabel.myBottomMargin = 20;   //总是固定在底部20的边距,因为上面的textView用了底部相对间距。
+    copyRightLabel.myBottomMargin = 20;   //总是固定在底部20的间距,因为上面的textView用了底部相对间距。
     copyRightLabel.myCenterXOffset = 0;
     [copyRightLabel sizeToFit];
     [rootLayout addSubview:copyRightLabel];
@@ -136,7 +138,6 @@
     //因为在垂直线性布局里面每一列只能有一个子视图，但在实际中我们希望某个子视图边缘有一个子视图并列，为了不破坏线性布局的能力，而又能实现这种功能
     //我们可以用如下的方法。
     __weak LLTest6ViewController *weakVC = self;
-    __weak UIImageView *weakHeadImageView = headImageView;
     rootLayout.rotationToDeviceOrientationBlock = ^(MyBaseLayout *ll, BOOL isFirst, BOOL isPortrait)
     {//rotationToDeviceOrientationBlock方法会在第一次完成布局或者因为屏幕旋转而完成布局时调用这个block。而且布局不会在调用完成后释放这个block。
       //因此需要注意循环引用的问题。
@@ -150,7 +151,7 @@
             weakVC.editButton = editButton;
         }
         //下面是直接用frame设置editButton的位置和尺寸。这里设置在头像图片的右边。。
-        weakVC.editButton.frame = CGRectMake(CGRectGetMaxX(weakHeadImageView.frame) + 5, CGRectGetMaxY(weakHeadImageView.frame) - 30, 50, 30);
+        weakVC.editButton.frame = CGRectMake(CGRectGetMaxX(weakVC.headImageView.frame) + 5, CGRectGetMaxY(weakVC.headImageView.frame) - 30, 50, 30);
         
     };
 
@@ -179,13 +180,21 @@
     MyBaseLayout *layout = (MyBaseLayout*)textView.superview;
     [layout setNeedsLayout];
     
+    
     //这里设置在布局结束后将textView滚动到光标所在的位置了。在布局执行布局完毕后如果设置了endLayoutBlock的话可以在这个block里面读取布局里面子视图的真实布局位置和尺寸，也就是可以在block内部读取每个子视图的真实的frame的值。
     layout.endLayoutBlock = ^{
     
         NSRange rg =  textView.selectedRange;
         [textView scrollRangeToVisible:rg];
         
+        
+        //因为这里面的editButton已经被设置为了useFrame.所以每次布局的变化都要手动的调整editButton的frame值！！！
+        //而且endLayout只会被执行一次，所以这里面不会产生相互引用的问题。
+        self.editButton.frame = CGRectMake(CGRectGetMaxX(self.headImageView.frame) + 5, CGRectGetMaxY(self.headImageView.frame) - 30, 50, 30);
+
+        
     };
+    
     
 }
 

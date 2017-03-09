@@ -23,6 +23,7 @@
     
     /*
        这个例子用来介绍流式布局中的内容填充流式布局，主要用来实现标签流的功能。内容填充流式布局的每行的数量是不固定的，而是根据其内容的尺寸来自动换行。
+       同时这个例子也可以看出XIB是完全可以和MyLayout中进行结合使用的，我们可以在XIB上进行视图的创建和其他属性的设置，同时拉出插座变量，然后再viewDidLoad中进行布局属性设置就好了。
      */
     
     [super viewDidLoad];
@@ -84,7 +85,7 @@
     
     //内容拉伸
     if (sender.isOn)
-        self.flowLayout.gravity = MyMarginGravity_Horz_Fill;  //对于内容填充的流时布局来说，averageArrange属性如果设置为YES表示里面的子视图的内容会自动的拉伸以便填充整个布局。
+        self.flowLayout.gravity = MyMarginGravity_Horz_Fill;  //对于内容填充的流时布局来说，gravity属性如果设置为MyMarginGravity_Horz_Fill表示里面的子视图的内容会自动的拉伸以便填充整个布局。
     else
         self.flowLayout.gravity = MyMarginGravity_None;
     

@@ -6,7 +6,10 @@
 [![QQ](https://img.shields.io/badge/QQ-156355113-yellow.svg?style=flat)]()
 [![GitHub stars](https://img.shields.io/github/stars/youngsoft/MyLinearLayout.svg)](https://github.com/youngsoft/MyLinearLayout/stargazers)
 
-##MyLayout(2016.12.28)
+
+![Logo](https://raw.githubusercontent.com/youngsoft/MyLinearLayout/master/MyLayout/MyLayout.png)
+
+##MyLayout(2017.3.04)
 
 MyLayout is a simple and easy objective-c framework for iOS view layout. MyLayout provides some simple functions to build a variety of complex interface. It integrates the functions including: Autolayout and SizeClass of iOS, five layout classes of Android, float and flex-box and bootstrap of HTML/CSS. The MyLayout's Swift version are named: **[TangramKit](https://github.com/youngsoft/TangramKit)**
 
@@ -209,22 +212,21 @@ Sample code:
     
     UIView *A = [UIView new];
     A.mySize = CGSizeMake(40,40);
-    A.marginGravity = MyMarginGravity_Horz_Left | MyMarginGravity_Vert_Top;
     [S addSubview:A];
     
     UIView *B = [UIView new];
     B.mySize = CGSizeMake(40,40);
-    B.marginGravity = MyMarginGravity_Horz_Right | MyMarginGravity_Vert_Top;
+    B.myRightMargin = 0;
     [S addSubview:B];
     
     UIView *C = [UIView new];
     C.mySize = CGSizeMake(40,40);
-    C.marginGravity = MyMarginGravity_Horz_Left | MyMarginGravity_Vert_Center;
+    C.myCenterYOffset = 0;
     [S addSubview:C];
     
     UIView *D = [UIView new];
     D.mySize = CGSizeMake(40,40);
-    D.marginGravity = MyMarginGravity_Horz_Center | MyMarginGravity_Vert_Center;
+    D.myCenterOffset = CGPointZero;
     [S addSubview:D];
     
     //..E，F,G
@@ -492,6 +494,7 @@ to set Size Classes Characteristics like below:
  [Download MyLayout](https://github.com/youngsoft/MyLinearLayout/archive/master.zip) and try out the included iPad and iPhone example apps
 Read FAQ, or articles below:
    
+[http://www.jianshu.com/p/4c1eb0dd676f](http://www.jianshu.com/p/4c1eb0dd676f)   布局框架和原理介绍     
 [http://blog.csdn.net/yangtiang/article/details/46483999](http://blog.csdn.net/yangtiang/article/details/46483999)   线性布局  
 [http://blog.csdn.net/yangtiang/article/details/46795231](http://blog.csdn.net/yangtiang/article/details/46795231)   相对布局  
 [http://blog.csdn.net/yangtiang/article/details/46492083](http://blog.csdn.net/yangtiang/article/details/46492083)   框架布局  
@@ -531,7 +534,7 @@ To integrate MyLayout into your Xcode project using CocoaPods, specify it in you
 source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '7.0'
 
-pod 'MyLayout', '~> 1.3.1'
+pod 'MyLayout', '~> 1.3.4'
 ```
    
 Then, run the following command:
@@ -547,7 +550,7 @@ Then, run the following command:
 * If you use MyLayout runtime cause 100% CPU usage said appeared constraint conflict, please check the subview's constraint set.
 * If you use MyLayout exception crashed in MyBaseLayout *willMoveToSuperview* method. it does not matter, just remove the exception break setting in CMD+7.
 * If you set wrapConentWidth or wrapContentHeight while set widthDime or heightDime in layout view may be constraint conflict。
-* If you set the layout view as a UIControllView's root view. please set wrapContentWidth and wrapContentHeight to NO.
+* If you set the layout view as a UIViewController's root view. please set wrapContentWidth and wrapContentHeight to NO.
 - Just only MyLinearLayout and MyFrameLayout's subview support relative margin.
 - If subview added in layout view, the setFrame method can't setting the origin but the size.
 
